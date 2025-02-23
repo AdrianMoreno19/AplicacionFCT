@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizado de Alumnos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes generales */
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #cabecera,
+        #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        #cuerpoEdicionBorradoProfesores {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dc3545;
+            padding: 20px;
+        }
+
+        #contenidoFormularioEdicioBorradoProfesores {
+            background-color: #6c757d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-control,
+        .btn-custom {
+            border-radius: 5px;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilo para la tabla */
+        .table th,
+        .table td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1>Gestión Empresas para FCT</h1>
+        </div>
+        <!-- Cuerpo -->
+        <div id="cuerpoEdicionBorradoProfesores">
+            <div id="contenidoFormularioEdicioBorradoProfesores" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Actualizado de Alumnos para FCT como Profesor</h3>
+                <form id="formularioID">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label text-white">ID:</label>
+                        <input type="number" name="id" id="id" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" name="enviar" id="Enviar" class="btn btn-light w-100">Enviar</button>
+                    </div>
+                    <div id="divObjetos">
+
+                    </div>
+                </form>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                document.getElementById('formularioID').addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const alumnoid = document.getElementById('id').value;
+                    axios.get(`/recogeAlumnos/${alumnoid}`)
+                        .then(response => {
+                            const alumnos = response.data;
+                            const formulario = document.getElementById("divObjetos");
+                            formulario.innerHTML = ""; // Limpiar contenido previo
+                            alumnos.forEach(alumno => {
+                                const form = document.createElement("form");
+                                form.classList.add("mb-3"); // Espaciado entre formularios
+                                form.innerHTML = `
+                                    <div class="mb-2">
+                                        <label for="nombre" class="form-label">Nombre Completo:</label>
+                                        <input type="text" id="nombre" name="nombre_completo" class="form-control" value="${alumno.nombre_completo}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                                        <input type="text" id="fechaNacimiento" name="fecha_nacimiento" class="form-control" value="${alumno.fecha_nacimiento}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="genero" class="form-label">Género:</label>
+                                        <input type="text" id="genero" name="genero" class="form-control" value="${alumno.genero || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="correo" class="form-label">Correo Electrónico:</label>
+                                        <input type="email" id="correo" name="correo_electronico" class="form-control" value="${alumno.correo_electronico || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="telefono" class="form-label">Teléfono:</label>
+                                        <input type="text" id="telefono" name="telefono" class="form-control" value="${alumno.telefono || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="direccion" class="form-label">Dirección:</label>
+                                        <textarea id="direccion" name="direccion" class="form-control">${alumno.direccion || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="centro" class="form-label">Centro Educativo:</label>
+                                        <input type="text" id="centro" name="centro_educativo" class="form-control" value="${alumno.centro_educativo || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="grado" class="form-label">Grado:</label>
+                                        <input type="text" id="grado" name="grado" class="form-control" value="${alumno.grado || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="estado" class="form-label">Estado del Alumno:</label>
+                                        <input type="text" id="estado" name="estado_alumno" class="form-control" value="${alumno.estado_alumno || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="fechaIngreso" class="form-label">Fecha de Ingreso:</label>
+                                        <input type="text" id="fechaIngreso" name="fecha_ingreso" class="form-control" value="${alumno.fecha_ingreso || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="notas" class="form-label">Notas Académicas:</label>
+                                        <input type="number" step="0.01" id="notas" name="notas_academicas" class="form-control" value="${alumno.notas_academicas || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="observaciones" class="form-label">Observaciones:</label>
+                                        <textarea id="observaciones" name="observaciones" class="form-control">${alumno.observaciones || ''}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="updateAlumno">Actualizar</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteAlumno">Eliminar</button>
+                                `;
+                                formulario.appendChild(form);
+                                document.getElementById('updateAlumno').addEventListener('click', function (event) {
+                                    event.preventDefault();
+                                    const Alumno = {
+                                        id: document.getElementById('id').value,
+                                        nombre_completo: document.getElementById('nombre').value,
+                                        fecha_nacimiento: document.getElementById('fechaNacimiento').value,
+                                        genero: document.getElementById('genero').value,
+                                        correo_electronico: document.getElementById('correo').value,
+                                        telefono: document.getElementById('telefono').value,
+                                        direccion: document.getElementById('direccion').value,
+                                        centro_educativo: document.getElementById('centro').value,
+                                        grado: document.getElementById('grado').value,
+                                        estado_alumno: document.getElementById('estado').value,
+                                        fecha_ingreso: document.getElementById('fechaIngreso').value,
+                                        notas_academicas: document.getElementById('notas').value,
+                                        observaciones: document.getElementById('observaciones').value
+                                    };
+                                    axios.put('/updateAlumnos', Alumno)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                                document.getElementById('deleteAlumno').addEventListener('click', function (event) {
+                                    event.preventDefault();  // Prevenir el envío por defecto del formulario
+                                    const alumnoid = document.getElementById('id').value;  // Obtener el ID desde el formulario
+                                    //esto es el id que obtenemos del formulario y se lo estamos enviando al servidor directamente como parametro
+                                    //por que tiene mas sentido que devolverle un objeto con un solo valor dentro de el
+                                    axios.delete(`/deleteAlumnos/${alumnoid}`)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error al obtener los alumnos:", error);
+                        });
+                });
+            </script>
+        </div>
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

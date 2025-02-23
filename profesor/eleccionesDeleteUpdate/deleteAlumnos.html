@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrado de Alumnos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes generales */
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #cabecera,
+        #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        #cuerpoEdicionBorradoProfesores {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dc3545;
+            padding: 20px;
+        }
+
+        #contenidoFormularioEdicioBorradoProfesores {
+            background-color: #6c757d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-control,
+        .btn-custom {
+            border-radius: 5px;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilo para la tabla */
+        .table th,
+        .table td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1>Gestión Empresas para FCT</h1>
+        </div>
+        <!-- Cuerpo -->
+        <div id="cuerpoEdicionBorradoProfesores">
+            <div id="contenidoFormularioEdicioBorradoProfesores" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Borrado de Alumnos para FCT como Profesor</h3>
+                <form id="formularioID">
+                    <div class="mb-3">
+                        <h1>Lista de Alumnos</h1>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre Completo</th>
+                                    <th>fecha_nacimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-alumnos">
+                                <!-- Aquí se agregarán los profesores -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label text-white">ID:</label>
+                        <input type="number" name="id" id="id" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" name="enviar" id="Enviar" class="btn btn-light w-100">Enviar</button>
+                    </div>
+                    <div id="mensaje"></div>
+                </form>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                // Función para obtener la lista de profesores desde el servidor
+                const obteneralumnos = () => {
+                    axios.get("/recogeAlumnos")
+                        .then(response => {
+                            const alumnos = response.data; // Obtener el array de profesores
+                            const lista = document.getElementById("lista-alumnos"); // Seleccionar el <tbody> de la tabla
+                            lista.innerHTML = ""; // Limpiar la lista antes de agregar nuevos elementos
+                            // Iterar sobre cada profesor
+                            alumnos.forEach(alumno => {
+                                const tr = document.createElement("tr"); // Crear una nueva fila
+                                tr.innerHTML = `
+                                    <td>${alumno.id}</td>
+                                    <td>${alumno.nombre_completo}</td>
+                                    <td>${alumno.fecha_nacimiento}</td>
+                                `;
+                                lista.appendChild(tr); // Agregar la fila a la tabla
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error al obtener los profesores:", error);
+                        });
+                };
+                window.onload = obteneralumnos;
+            </script>
+            <script>
+                document.getElementById('formularioID').addEventListener('submit', function (event) {
+                    event.preventDefault();  // Prevenir el envío por defecto del formulario
+                    const alumnoid = document.getElementById('id').value;  // Obtener el ID desde el formulario
+                    //esto es el id que obtenemos del formulario y se lo estamos enviando al servidor directamente como parametro
+                    //por que tiene mas sentido que devolverle un objeto con un solo valor dentro de el
+                    axios.delete(`/deleteAlumnos/${alumnoid}`)
+                        .then(response => {
+                            //response.data.message hace referencia a una propiedad específica dentro de la respuesta que el servidor envió. En este caso,
+                            //se espera que el servidor devuelva un objeto con una propiedad message, que contiene un mensaje (como "Alumno eliminado exitosamente" o un mensaje de error).
+                            document.getElementById('mensaje').textContent = response.data.message;
+                        })
+                        .catch(error => {
+                            document.getElementById('mensaje').textContent = `Error: ${error.response.data.error}`;
+                        });
+                });
+            </script>
+        </div>
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizado de Contacto contactoEmpresas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes generales */
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #cabecera,
+        #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        #cuerpoEdicionBorradoProfesores {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dc3545;
+            padding: 20px;
+        }
+
+        #contenidoFormularioEdicioBorradoProfesores {
+            background-color: #6c757d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-control,
+        .btn-custom {
+            border-radius: 5px;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilo para la tabla */
+        .table th,
+        .table td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1>Gestión contactoEmpresas para FCT</h1>
+        </div>
+        <!-- Cuerpo -->
+        <div id="cuerpoEdicionBorradoProfesores">
+            <div id="contenidoFormularioEdicioBorradoProfesores" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Actualizado de Contacto contactoEmpresas para FCT como Profesor</h3>
+                <form id="formularioID">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label text-white">ID:</label>
+                        <input type="number" name="id" id="id" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" name="enviar" id="Enviar" class="btn btn-light w-100">Enviar</button>
+                    </div>
+                    <div id="divObjetos">
+
+                    </div>
+                </form>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                document.getElementById('formularioID').addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const contactoEmpresaId = document.getElementById('id').value;
+                    axios.get(`/recogeContactoEmpresas/${contactoEmpresaId}`)
+                        .then(response => {
+                            const contactoEmpresas = response.data;
+                            const formulario = document.getElementById("divObjetos");
+                            formulario.innerHTML = ""; // Limpiar contenido previo
+                            contactoEmpresas.forEach(empresa => {
+                                const form = document.createElement("form");
+                                form.classList.add("mb-3"); // Espaciado entre formularios
+                                form.innerHTML = `
+                                    <div class="mb-2">
+                                        <label for="nombre_completo" class="form-label">Nombre Completo:</label>
+                                        <input type="text" id="nombre_completo" name="nombre_completo" class="form-control" value="${empresa.nombre_completo}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="cargo" class="form-label">Cargo:</label>
+                                        <input type="text" id="cargo" name="cargo" class="form-control" value="${empresa.cargo}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="departamento" class="form-label">Departamento:</label>
+                                        <input type="text" id="departamento" name="departamento" class="form-control" value="${empresa.departamento}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="correo_electronico" class="form-label">Correo Electrónico:</label>
+                                        <input type="email" id="correo_electronico" name="correo_electronico" class="form-control" value="${empresa.correo_electronico}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="telefono" class="form-label">Teléfono:</label>
+                                        <input type="text" id="telefono" name="telefono" class="form-control" value="${empresa.telefono || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="extension_telefonica" class="form-label">Extensión Telefónica:</label>
+                                        <input type="text" id="extension_telefonica" name="extension_telefonica" class="form-control" value="${empresa.extension_telefonica || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="direccion_oficina" class="form-label">Dirección de Oficina:</label>
+                                        <textarea id="direccion_oficina" name="direccion_oficina" class="form-control">${empresa.direccion_oficina || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="horario" class="form-label">Horario:</label>
+                                        <input type="time" id="horario" name="horario" class="form-control" value="${empresa.horario || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="rol" class="form-label">Rol:</label>
+                                        <input type="text" id="rol" name="rol" class="form-control" value="${empresa.rol || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="rol_empresa" class="form-label">Rol en la Empresa:</label>
+                                        <input type="text" id="rol_empresa" name="rol_empresa" class="form-control" value="${empresa.rol_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+                                        <input type="date" id="fecha_ingreso" name="fecha_ingreso" class="form-control" value="${empresa.fecha_ingreso || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="foto_perfil" class="form-label">Foto de Perfil:</label>
+                                        <input type="file" id="foto_perfil" name="foto_perfil" class="form-control" value="${empresa.foto_perfil || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="observaciones" class="form-label">Observaciones:</label>
+                                        <textarea id="observaciones" name="observaciones" class="form-control">${empresa.observaciones || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="estado" class="form-label">Estado:</label>
+                                        <input type="text" id="estado" name="estado" class="form-control" value="${empresa.estado || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="notas_adicionales" class="form-label">Notas Adicionales:</label>
+                                        <textarea id="notas_adicionales" name="notas_adicionales" class="form-control">${empresa.notas_adicionales || ''}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="updateContactoEmpresa">Actualizar</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteContactoEmpresa">Eliminar</button>
+                                `;
+                                formulario.appendChild(form);
+                                document.getElementById('updateContactoEmpresa').addEventListener('click', function (event) {
+                                    event.preventDefault();
+                                    const contactoEmpresa = {
+                                        id: document.getElementById('id').value,
+                                        nombre_completo: document.getElementById('nombre_completo').value,
+                                        cargo: document.getElementById('cargo').value,
+                                        departamento: document.getElementById('departamento').value,
+                                        correo_electronico: document.getElementById('correo_electronico').value,
+                                        telefono: document.getElementById('telefono').value,
+                                        extension_telefonica: document.getElementById('extension_telefonica').value,
+                                        direccion_oficina: document.getElementById('direccion_oficina').value,
+                                        horario: document.getElementById('horario').value,
+                                        rol: document.getElementById('rol').value,
+                                        rol_empresa: document.getElementById('rol_empresa').value,
+                                        fecha_ingreso: document.getElementById('fecha_ingreso').value,
+                                        foto_perfil: document.getElementById('foto_perfil').value,
+                                        observaciones: document.getElementById('observaciones').value,
+                                        estado: document.getElementById('estado').value,
+                                        notas_adicionales: document.getElementById('notas_adicionales').value
+                                    };
+
+                                    axios.put('/updateContactoEmpresa', contactoEmpresa)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                                document.getElementById('deleteContactoEmpresa').addEventListener('click', function (event) {
+                                    event.preventDefault();  // Prevenir el envío por defecto del formulario
+                                    const contactoEmpresaId = document.getElementById('id').value;  // Obtener el ID desde el formulario
+                                    //esto es el id que obtenemos del formulario y se lo estamos enviando al servidor directamente como parametro
+                                    //por que tiene mas sentido que devolverle un objeto con un solo valor dentro de el
+                                    axios.delete(`/deleteContactoEmpresa/${contactoEmpresaId}`)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error al obtener los contactoEmpresas:", error);
+                        });
+                });
+            </script>
+        </div>
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

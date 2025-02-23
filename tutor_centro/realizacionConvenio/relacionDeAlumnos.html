@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asignación de Alumnos a Empresas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes generales */
+        html, body {
+            height: 100%;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #cabecera, #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        #cuerpo {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dc3545;
+            padding: 20px;
+        }
+        #contenidoFormulario {
+            background-color: #6c757d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .form-control, .btn-danger {
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1>Gestión Empresas para FCT</h1>
+        </div>
+        <!-- Cuerpo -->
+        <div id="cuerpo">
+            <div id="contenidoFormulario" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Asignación de Alumnos a Empresas</h3>
+                <form action="/convenios" method="post">
+                    <!-- Lista de Alumnos -->
+                    <div class="mb-3 p-3 bg-light text-dark border rounded">
+                        <p>Adrián</p>
+                        <p>Alex</p>
+                        <p>Alonso</p>
+                        <p>Borja</p>
+                        <p>Mario</p>
+                        <p>David</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre Alumno:</label>
+                        <input type="text" name="nombreAlumno" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">DNI Tutor:</label>
+                        <input type="text" name="dniTutor" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Correo Electrónico:</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Lugar de Prácticas:</label>
+                        <input type="text" name="lugarEmpresa" class="form-control">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Inicio:</label>
+                            <input type="date" name="fechaI" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha Fin:</label>
+                            <input type="date" name="fechaF" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Horario:</label>
+                            <input type="time" name="horas" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de Horas:</label>
+                            <input type="number" name="numeroHoras" class="form-control">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Modalidad:</label>
+                        <select name="modalidad" class="form-select">
+                            <option value="PRESENCIAL">Presencial</option>
+                            <option value="TELETRABAJO">Teletrabajo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Relación:</label>
+                        <select name="relacion" class="form-select">
+                            <option value="EMPRESA">Empresa</option>
+                            <option value="DIRECCION">Dirección</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

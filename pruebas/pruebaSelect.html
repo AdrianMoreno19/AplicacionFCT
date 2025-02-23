@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Lista de Alumnos</h1>
+    <button onclick="obtenerAlumnos()">Cargar Alumnos</button>
+
+    <ul id="lista-alumnos"></ul>
+
+    <script>
+        // Función para obtener la lista de alumnos desde el servidor
+        const obtenerAlumnos = () => {
+            // Hacer una solicitud GET a la ruta /alumnos de la API
+            axios.get("/alumnos")
+                .then(respuesta => {
+                    // Si la solicitud es exitosa, la respuesta contiene los datos (lista de alumnos)
+                    const alumnos = respuesta.data; // Obtener el array de alumnos
+                    const lista = document.getElementById("lista-alumnos"); // Seleccionar el <ul> donde se mostrarán los alumnos
+
+                    // Limpiar la lista antes de agregar nuevos elementos
+                    lista.innerHTML = ""; // Eliminar cualquier contenido previo en la lista
+
+                    // Iterar sobre cada alumno en el array de alumnos
+                    alumnos.forEach(alumno => {
+                        // Crear un nuevo elemento <li> para cada alumno
+                        const li = document.createElement("li");
+                        // Definir el contenido del <li> con la información del alumno
+                        li.textContent = `${alumno.id} - ${alumno.nombre_completo} (${alumno.correo_electronico})`;
+                        // Agregar el nuevo <li> a la lista
+                        lista.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    // Si ocurre un error durante la solicitud, lo mostramos en la consola
+                    console.error("Error al obtener los alumnos:", error);
+                });
+        };
+
+    </script>
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+</body>
+
+</html>

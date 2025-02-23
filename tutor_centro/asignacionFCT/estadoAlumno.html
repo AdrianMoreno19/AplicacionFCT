@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alumnos Asignación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo adicional para el contenido */
+        #contenidoFormularioEstadoAlumno {
+            padding: 30px;
+            background-color: #6c757d;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-control,
+        .btn-danger {
+            border-radius: 5px;
+        }
+
+        #cuadroBordeTablaAlumnos {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+        #cuerpoEstadoAlumnos {
+            background-color: #dc3545;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera" class="d-flex align-items-center justify-content-center p-3 bg-secondary">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1 class="text-white">Gestión Empresas para FCT</h1>
+        </div>
+
+        <!-- Cuerpo -->
+        <div id="cuerpoEstadoAlumnos">
+            <div id="contenidoFormularioEstadoAlumno" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Asignación del Estado de los Alumnos</h3>
+                <form action="/asignacionCurso" method="post">
+                    <div id="cuadroBordeTablaAlumnos" class="mb-4">
+                        <p>Adrián</p>
+                        <p>Alex</p>
+                        <p>Alonso</p>
+                        <p>Borja</p>
+                        <p>Mario</p>
+                        <p>David</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreAlumno" class="form-label">Nombre:</label>
+                        <input type="text" name="nombreAlumno" class="form-control" id="nombreAlumno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <select name="estado" class="form-select" id="estado">
+                            <option value="NO REALIZA PRACTICAS">NO REALIZA PRACTICAS</option>
+                            <option value="PENDIENTE ASIGNACION DE PRACTICAS">PENDIENTE ASIGNACION DE PRACTICAS</option>
+                            <option value="ASIGNADO A EMPRESA">ASIGNADO A EMPRESA</option>
+                            <option value="PENDIENTE CONVENIO">PENDIENTE CONVENIO</option>
+                            <option value="PENDIENTE RELACION DE ALUMNOS">PENDIENTE RELACION DE ALUMNOS</option>
+                            <option value="PENDIENTE PROGRAMA y HORARIO">PENDIENTE PROGRAMA y HORARIO</option>
+                            <option value="PENDIENTE EVALUCIÓN EMPRESA">PENDIENTE EVALUACIÓN EMPRESA</option>
+                            <option value="PENDIENTE HOJAS DE FIRMAS">PENDIENTE HOJAS DE FIRMAS</option>
+                            <option value="PENDIENTE ENVIO DOCUMENTACION">PENDIENTE ENVIO DOCUMENTACION</option>
+                            <option value="FINALIZADAS">FINALIZADAS</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" name="enviar" class="btn btn-danger w-100">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

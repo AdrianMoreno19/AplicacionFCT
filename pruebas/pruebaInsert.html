@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar Alumno</title>
+</head>
+<body>
+    <h1>Formulario para insertar nuevo alumno</h1>
+
+    <form id="formulario-alumno">
+        <label for="nombre_completo">Nombre Completo:</label>
+        <input type="text" id="nombre_completo" name="nombre_completo" required><br><br>
+
+        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"><br><br>
+
+        <label for="genero">Género:</label>
+        <input type="text" id="genero" name="genero"><br><br>
+
+        <label for="correo_electronico">Correo Electrónico:</label>
+        <input type="email" id="correo_electronico" name="correo_electronico" required><br><br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono"><br><br>
+
+        <label for="direccion">Dirección:</label>
+        <textarea id="direccion" name="direccion"></textarea><br><br>
+
+        <label for="centro_educativo">Centro Educativo:</label>
+        <input type="text" id="centro_educativo" name="centro_educativo"><br><br>
+
+        <label for="grado">Grado:</label>
+        <input type="text" id="grado" name="grado"><br><br>
+
+        <label for="estado_alumno">Estado del Alumno:</label>
+        <input type="text" id="estado_alumno" name="estado_alumno"><br><br>
+
+        <label for="fecha_ingreso">Fecha de Ingreso:</label>
+        <input type="date" id="fecha_ingreso" name="fecha_ingreso"><br><br>
+
+        <label for="notas_academicas">Notas Académicas:</label>
+        <input type="number" step="0.01" id="notas_academicas" name="notas_academicas"><br><br>
+
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" name="observaciones"></textarea><br><br>
+
+        <button type="submit">Insertar Alumno</button>
+    </form>
+
+    <div id="mensaje"></div>
+
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        //Aqui buscamos el elementro del formulario con su id y le decimos que cuando aprete el boton submit ocurra una funcion
+        document.getElementById('formulario-alumno').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+            //Aqui creamos un objeto alumno que contiene los datos que recogemos del formulario por ejemplo recogemos el id por el input
+            //y se lo asignamos a la propiedad id del objeto alumno
+            const alumno = {
+                nombre_completo: document.getElementById('nombre_completo').value,
+                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                genero: document.getElementById('genero').value,
+                correo_electronico: document.getElementById('correo_electronico').value,
+                telefono: document.getElementById('telefono').value,
+                direccion: document.getElementById('direccion').value,
+                centro_educativo: document.getElementById('centro_educativo').value,
+                grado: document.getElementById('grado').value,
+                estado_alumno: document.getElementById('estado_alumno').value,
+                fecha_ingreso: document.getElementById('fecha_ingreso').value,
+                notas_academicas: document.getElementById('notas_academicas').value,
+                observaciones: document.getElementById('observaciones').value,
+            };
+
+            //Aqui con axios realizamos una peticion http de tipo post a la ruta del servidor que hemos creado
+            //enviando los datos del objeto alumno
+            axios.post('/alumnosInsert', alumno)
+                //Si la peticion es exitosa entonces se ejecutara esta funcion despues del then que se encargara de pintar un mensaje
+                //En este contexto, response es el objeto que se recibe como parte de la respuesta de la solicitud HTTP realizada con Axios (la librería que estás utilizando para hacer peticiones HTTP). 
+                //Cuando envías una solicitud POST, PUT o DELETE al servidor, la respuesta que el servidor envía a esa solicitud se captura en el response.
+                //Response recibe los datos que le envia el servidor como respuesta
+                .then(response => {
+                    //response.data contiene los datos enviados por el servidor como parte de la respuesta.
+                    //response.data.alumnoId se refiere a un valor específico dentro de esos datos: el ID del alumno que el servidor ha generado al insertar el nuevo alumno en la base de datos.
+                    //El nombre alumnoId no está relacionado directamente con el nombre de la columna en la base de datos (que es id), sino que es simplemente un nombre más descriptivo que el servidor utiliza para devolver el ID del alumno.
+                    document.getElementById('mensaje').textContent = response.data.message, "ID:", response.data.alumnoId, " el nombre es:", response.data.columnaNombreCompleto;
+                })
+                //y esta es la parte de si la funcion ha salido mal
+                .catch(error => {
+                    document.getElementById('mensaje').textContent = `Error: ${error.response.data.error}`;
+                });
+        });
+    </script>
+</body>
+</html>

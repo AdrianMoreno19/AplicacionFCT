@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizado de Empresas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes generales */
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #cabecera,
+        #pie {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        #cuerpoEdicionBorradoProfesores {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dc3545;
+            padding: 20px;
+        }
+
+        #contenidoFormularioEdicioBorradoProfesores {
+            background-color: #6c757d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-control,
+        .btn-custom {
+            border-radius: 5px;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilo para la tabla */
+        .table th,
+        .table td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- Cabecera -->
+        <div id="cabecera">
+            <img src="../../imagenes/fct.png" alt="Imagen FCT" width="150" height="80" class="me-3">
+            <h1>Gestión Empresas para FCT</h1>
+        </div>
+        <!-- Cuerpo -->
+        <div id="cuerpoEdicionBorradoProfesores">
+            <div id="contenidoFormularioEdicioBorradoProfesores" class="border border-dark shadow">
+                <h3 class="mb-4 text-center">Actualizado de Empresas para FCT como Profesor</h3>
+                <form id="formularioID">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label text-white">ID:</label>
+                        <input type="number" name="id" id="id" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" name="enviar" id="Enviar" class="btn btn-light w-100">Enviar</button>
+                    </div>
+                    <div id="divObjetos">
+
+                    </div>
+                </form>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                document.getElementById('formularioID').addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const empresaid = document.getElementById('id').value;
+                    axios.get(`/recogeEmpresas/${empresaid}`)
+                        .then(response => {
+                            const empresas = response.data;
+                            const formulario = document.getElementById("divObjetos");
+                            formulario.innerHTML = ""; // Limpiar contenido previo
+                            empresas.forEach(empresa => {
+                                const form = document.createElement("form");
+                                form.classList.add("mb-3"); // Espaciado entre formularios
+                                form.innerHTML = `
+                                    <div class="mb-2">
+                                        <label for="nombre_empresa" class="form-label">Nombre de la Empresa:</label>
+                                        <input type="text" id="nombre_empresa" name="nombre_empresa" class="form-control" value="${empresa.nombre_empresa}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="razon_social" class="form-label">Razón Social:</label>
+                                        <input type="text" id="razon_social" name="razon_social" class="form-control" value="${empresa.razon_social}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="tipo_empresa" class="form-label">Tipo de Empresa:</label>
+                                        <input type="text" id="tipo_empresa" name="tipo_empresa" class="form-control" value="${empresa.tipo_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="nif_cif" class="form-label">NIF/CIF:</label>
+                                        <input type="text" id="nif_cif" name="nif_cif" class="form-control" value="${empresa.nif_cif || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="correo_empresa" class="form-label">Correo Electrónico de la Empresa:</label>
+                                        <input type="email" id="correo_empresa" name="correo_empresa" class="form-control" value="${empresa.correo_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="telefono_empresa" class="form-label">Teléfono de la Empresa:</label>
+                                        <input type="text" id="telefono_empresa" name="telefono_empresa" class="form-control" value="${empresa.telefono_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="direccion_empresa" class="form-label">Dirección de la Empresa:</label>
+                                        <textarea id="direccion_empresa" name="direccion_empresa" class="form-control">${empresa.direccion_empresa || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="ciudad_empresa" class="form-label">Ciudad de la Empresa:</label>
+                                        <input type="text" id="ciudad_empresa" name="ciudad_empresa" class="form-control" value="${empresa.ciudad_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="codigo_postal" class="form-label">Código Postal:</label>
+                                        <input type="number" id="codigo_postal" name="codigo_postal" class="form-control" value="${empresa.codigo_postal || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="pais_empresa" class="form-label">País de la Empresa:</label>
+                                        <input type="text" id="pais_empresa" name="pais_empresa" class="form-control" value="${empresa.pais_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="fecha_constitucion" class="form-label">Fecha de Constitución:</label>
+                                        <input type="text" id="fecha_constitucion" name="fecha_constitucion" class="form-control" value="${empresa.fecha_constitucion || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="sector_empresa" class="form-label">Sector de la Empresa:</label>
+                                        <input type="text" id="sector_empresa" name="sector_empresa" class="form-control" value="${empresa.sector_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="numero_empleados" class="form-label">Número de Empleados:</label>
+                                        <input type="number" id="numero_empleados" name="numero_empleados" class="form-control" value="${empresa.numero_empleados || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="sitio_web" class="form-label">Sitio Web:</label>
+                                        <input type="url" id="sitio_web" name="sitio_web" class="form-control" value="${empresa.sitio_web || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="logo_empresa" class="form-label">Logo de la Empresa:</label>
+                                        <input type="file" id="logo_empresa" name="logo_empresa" class="form-control" value="${empresa.logo_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="representante_legal" class="form-label">Representante Legal:</label>
+                                        <input type="text" id="representante_legal" name="representante_legal" class="form-control" value="${empresa.representante_legal || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="estado_empresa" class="form-label">Estado de la Empresa:</label>
+                                        <input type="text" id="estado_empresa" name="estado_empresa" class="form-control" value="${empresa.estado_empresa || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="fecha_alta" class="form-label">Fecha de Alta:</label>
+                                        <input type="text" id="fecha_alta" name="fecha_alta" class="form-control" value="${empresa.fecha_alta || ''}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="notas_adicionales" class="form-label">Notas Adicionales:</label>
+                                        <textarea id="notas_adicionales" name="notas_adicionales" class="form-control">${empresa.notas_adicionales || ''}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="updateEmpresa">Actualizar</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteEmpresa">Eliminar</button>
+                                `;
+                                formulario.appendChild(form);
+                                document.getElementById('updateEmpresa').addEventListener('click', function (event) {
+                                    event.preventDefault();
+                                    const empresa = {
+                                        id: document.getElementById('id').value,
+                                        nombre_empresa: document.getElementById('nombre_empresa').value,
+                                        razon_social: document.getElementById('razon_social').value,
+                                        tipo_empresa: document.getElementById('tipo_empresa').value,
+                                        nif_cif: document.getElementById('nif_cif').value,
+                                        correo_empresa: document.getElementById('correo_empresa').value,
+                                        telefono_empresa: document.getElementById('telefono_empresa').value,
+                                        direccion_empresa: document.getElementById('direccion_empresa').value,
+                                        ciudad_empresa: document.getElementById('ciudad_empresa').value,
+                                        codigo_postal: document.getElementById('codigo_postal').value,
+                                        pais_empresa: document.getElementById('pais_empresa').value,
+                                        fecha_constitucion: document.getElementById('fecha_constitucion').value,
+                                        sector_empresa: document.getElementById('sector_empresa').value,
+                                        numero_empleados: document.getElementById('numero_empleados').value,
+                                        sitio_web: document.getElementById('sitio_web').value,
+                                        logo_empresa: document.getElementById('logo_empresa').value,
+                                        representante_legal: document.getElementById('representante_legal').value,
+                                        estado_empresa: document.getElementById('estado_empresa').value,
+                                        fecha_alta: document.getElementById('fecha_alta').value,
+                                        notas_adicionales: document.getElementById('notas_adicionales').value
+                                    };
+                                    axios.put('/updateEmpresa', empresa)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                                document.getElementById('deleteEmpresa').addEventListener('click', function (event) {
+                                    event.preventDefault();  // Prevenir el envío por defecto del formulario
+                                    const empresaid = document.getElementById('id').value;  // Obtener el ID desde el formulario
+                                    //esto es el id que obtenemos del formulario y se lo estamos enviando al servidor directamente como parametro
+                                    //por que tiene mas sentido que devolverle un objeto con un solo valor dentro de el
+                                    axios.delete(`/deleteEmpresa/${empresaid}`)
+                                        .then(response => {
+                                            document.getElementById('divObjetos').textContent = response.data.message;
+                                        })
+                                        .catch(error => {
+                                            document.getElementById('divObjetos').textContent = `Error: ${error.response.data.error}`;
+                                        });
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error al obtener los empresas:", error);
+                        });
+                });
+            </script>
+        </div>
+        <!-- Pie de Página -->
+        <div id="pie">
+            <h1>Aplicación FCT</h1>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

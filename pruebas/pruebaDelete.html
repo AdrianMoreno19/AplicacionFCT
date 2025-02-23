@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Alumno</title>
+</head>
+<body>
+    <h1>Eliminar Alumno</h1>
+
+    <!-- Formulario para eliminar un alumno -->
+    <form id="formulario-eliminar">
+        <label for="id">ID del Alumno a Eliminar:</label>
+        <input type="number" id="id" required>
+        <button type="submit">Eliminar Alumno</button>
+    </form>
+
+    <p id="mensaje"></p>
+
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+
+    <script>
+        //Recogemos el formulario por id y si apretamos el boton submit se ejecuta el evento
+        document.getElementById('formulario-eliminar').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevenir el envío por defecto del formulario
+
+            const alumnoId = document.getElementById('id').value;  // Obtener el ID desde el formulario
+
+            //esto es el id que obtenemos del formulario y se lo estamos enviando al servidor directamente como parametro
+            //por que tiene mas sentido que devolverle un objeto con un solo valor dentro de el
+            axios.delete(`/alumnoDelete/${alumnoId}`)
+                .then(response => {
+                    //response.data.message hace referencia a una propiedad específica dentro de la respuesta que el servidor envió. En este caso,
+                    //se espera que el servidor devuelva un objeto con una propiedad message, que contiene un mensaje (como "Alumno eliminado exitosamente" o un mensaje de error).
+                    document.getElementById('mensaje').textContent = response.data.message;
+                })
+                .catch(error => {
+                    document.getElementById('mensaje').textContent = `Error: ${error.response.data.error}`;
+                });
+        });
+    </script>
+</body>
+</html>
